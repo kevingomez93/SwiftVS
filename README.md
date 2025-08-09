@@ -26,7 +26,7 @@ Add SwiftVS to your project using Swift Package Manager:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/yourusername/SwiftVS.git", from: "1.0.0")
+    .package(url: "https://github.com/kevingomez93/SwiftVS.git", from: "1.0.0")
 ]
 ```
 
@@ -34,7 +34,7 @@ dependencies: [
 
 1. Open your project in Xcode
 2. Go to **File → Add Package Dependencies**
-3. Enter the repository URL: `https://github.com/yourusername/SwiftVS.git`
+3. Enter the repository URL: `https://github.com/kevingomez93/SwiftVS.git`
 4. Select the version and add to your target
 
 ## 🎯 Quick Start
@@ -331,9 +331,9 @@ SwiftVS is released under the MIT License. See [LICENSE](LICENSE) for details.
 
 ## 📞 Support
 
-- **Documentation**: [GitHub Wiki](https://github.com/yourusername/SwiftVS/wiki)
-- **Issues**: [GitHub Issues](https://github.com/yourusername/SwiftVS/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/yourusername/SwiftVS/discussions)
+- **Documentation**: [GitHub Wiki](https://github.com/kevingomez93/SwiftVS/wiki)
+- **Issues**: [GitHub Issues](https://github.com/kevingomez93/SwiftVS/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/kevingomez93/SwiftVS/discussions)
 
 ---
 

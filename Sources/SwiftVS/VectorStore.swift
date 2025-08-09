@@ -30,6 +30,7 @@ public actor VectorStore {
     private var db: Connection?
     private let databasePath: String
     private let expectedDimension: Int?
+    private var isSetup = false
     
     // Table definitions
     private let vectors = Table("vectors")
@@ -58,7 +59,11 @@ public actor VectorStore {
         )
         
         self.db = try Connection(databasePath)
-        
+    }
+    
+    /// Setup database tables and indexes
+    /// This method should be called after initialization
+    private func setupDatabase() throws {
         // Create tables
         try db?.run(vectors.create(ifNotExists: true) { t in
             t.column(id, primaryKey: true)
@@ -73,6 +78,14 @@ public actor VectorStore {
         try db?.run("CREATE INDEX IF NOT EXISTS idx_dimension ON vectors(dimension)")
     }
     
+    /// Ensure database is setup
+    private func ensureSetup() throws {
+        if !isSetup {
+            try setupDatabase()
+            isSetup = true
+        }
+    }
+    
     /// Insert a vector into the store
     /// - Parameter vector: The vector to insert
     /// - Throws: VectorStoreError if insertion fails
@@ -80,6 +93,8 @@ public actor VectorStore {
         guard let db = db else {
             throw VectorStoreError.databaseNotInitialized
         }
+        
+        try ensureSetup()
         
         // Validate dimension if constraint is set
         if let expectedDim = expectedDimension, vector.dimension != expectedDim {
@@ -128,6 +143,8 @@ public actor VectorStore {
             throw VectorStoreError.databaseNotInitialized
         }
         
+        try ensureSetup()
+        
         // Validate dimension if constraint is set
         if let expectedDim = expectedDimension, vector.dimension != expectedDim {
             throw VectorStoreError.dimensionMismatch(expected: expectedDim, actual: vector.dimension)
@@ -163,6 +180,8 @@ public actor VectorStore {
             throw VectorStoreError.databaseNotInitialized
         }
         
+        try ensureSetup()
+        
         do {
             let vectorRow = vectors.filter(id == vectorId.uuidString)
             let changes = try db.run(vectorRow.delete())
@@ -186,6 +205,8 @@ public actor VectorStore {
             throw VectorStoreError.databaseNotInitialized
         }
         
+        try ensureSetup()
+        
         do {
             let vectorRow = vectors.filter(id == vectorId.uuidString)
             guard let row = try db.pluck(vectorRow) else {
@@ -208,6 +229,8 @@ public actor VectorStore {
             throw VectorStoreError.databaseNotInitialized
         }
         
+        try ensureSetup()
+        
         do {
             var results: [Vector] = []
             for row in try db.prepare(vectors) {
@@ -228,6 +251,8 @@ public actor VectorStore {
         guard let db = db else {
             throw VectorStoreError.databaseNotInitialized
         }
+        
+        try ensureSetup()
         
         do {
             var results: [Vector] = []
@@ -250,6 +275,8 @@ public actor VectorStore {
         guard let db = db else {
             throw VectorStoreError.databaseNotInitialized
         }
+        
+        try ensureSetup()
         
         do {
             var results: [Vector] = []
@@ -274,6 +301,8 @@ public actor VectorStore {
             throw VectorStoreError.databaseNotInitialized
         }
         
+        try ensureSetup()
+        
         do {
             return try db.scalar(vectors.count)
         } catch {
@@ -287,6 +316,8 @@ public actor VectorStore {
         guard let db = db else {
             throw VectorStoreError.databaseNotInitialized
         }
+        
+        try ensureSetup()
         
         do {
             try db.run(vectors.delete())
@@ -303,6 +334,8 @@ public actor VectorStore {
         guard let db = db else {
             throw VectorStoreError.databaseNotInitialized
         }
+        
+        try ensureSetup()
         
         do {
             let vectorRow = vectors.filter(id == vectorId.uuidString)
@@ -322,6 +355,8 @@ public actor VectorStore {
         guard let db = db else {
             throw VectorStoreError.databaseNotInitialized
         }
+        
+        try ensureSetup()
         
         do {
             var results: [Vector] = []

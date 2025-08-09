@@ -75,7 +75,7 @@ struct SwiftVSTests {
     // MARK: - VectorStore Tests
     
     @Test func testVectorStoreInitialization() async throws {
-        let tempPath = NSTemporaryDirectory() + "test_vectors.db"
+        let tempPath = NSTemporaryDirectory() + "test_vectors_\(UUID().uuidString).db"
         defer { try? FileManager.default.removeItem(atPath: tempPath) }
         
         let store = try VectorStore(databasePath: tempPath)
@@ -84,7 +84,7 @@ struct SwiftVSTests {
     }
     
     @Test func testVectorStoreInsertAndRetrieve() async throws {
-        let tempPath = NSTemporaryDirectory() + "test_vectors.db"
+        let tempPath = NSTemporaryDirectory() + "test_vectors_\(UUID().uuidString).db"
         defer { try? FileManager.default.removeItem(atPath: tempPath) }
         
         let store = try VectorStore(databasePath: tempPath)
@@ -99,7 +99,7 @@ struct SwiftVSTests {
     }
     
     @Test func testVectorStoreUpdate() async throws {
-        let tempPath = NSTemporaryDirectory() + "test_vectors.db"
+        let tempPath = NSTemporaryDirectory() + "test_vectors_\(UUID().uuidString).db"
         defer { try? FileManager.default.removeItem(atPath: tempPath) }
         
         let store = try VectorStore(databasePath: tempPath)
@@ -115,7 +115,7 @@ struct SwiftVSTests {
     }
     
     @Test func testVectorStoreDelete() async throws {
-        let tempPath = NSTemporaryDirectory() + "test_vectors.db"
+        let tempPath = NSTemporaryDirectory() + "test_vectors_\(UUID().uuidString).db"
         defer { try? FileManager.default.removeItem(atPath: tempPath) }
         
         let store = try VectorStore(databasePath: tempPath)
@@ -129,7 +129,7 @@ struct SwiftVSTests {
     }
     
     @Test func testVectorStoreBatch() async throws {
-        let tempPath = NSTemporaryDirectory() + "test_vectors.db"
+        let tempPath = NSTemporaryDirectory() + "test_vectors_\(UUID().uuidString).db"
         defer { try? FileManager.default.removeItem(atPath: tempPath) }
         
         let store = try VectorStore(databasePath: tempPath)
@@ -366,7 +366,7 @@ struct SwiftVSTests {
         
         let nonExistentId = UUID()
         
-        #expect(throws: VectorStoreError.vectorNotFound(nonExistentId)) {
+        await #expect(throws: VectorStoreError.vectorNotFound(nonExistentId)) {
             try await store.get(id: nonExistentId)
         }
     }
@@ -379,7 +379,7 @@ struct SwiftVSTests {
         
         try await store.insert(validVector) // Should succeed
         
-        #expect(throws: VectorStoreError.dimensionMismatch(expected: 3, actual: 2)) {
+        await #expect(throws: VectorStoreError.dimensionMismatch(expected: 3, actual: 2)) {
             try await store.insert(invalidVector)
         }
     }
