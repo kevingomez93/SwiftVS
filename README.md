@@ -6,7 +6,7 @@
 
 A Swift-native vector database framework that provides efficient storage, indexing, and similarity search for high-dimensional vectors on Apple platforms.
 
-## 🚀 Features
+## 🚀 Features  
 
 - **High-Dimensional Vector Storage**: Store vectors with any dimension along with flexible metadata
 - **Multiple Distance Metrics**: Cosine similarity, Euclidean distance, and dot product
